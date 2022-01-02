@@ -4,7 +4,7 @@ const { exec } = require("child_process");
 const Telegraf = require("telegraf").Telegraf;
 
 const bot = new Telegraf(botConfig.telegramTokenBot);
-
+let quene = 0;
 const start = async (ctx) => {
   await ctx.reply("Welcom to Pikbest bot. '/help' to show all command");
 };
@@ -28,13 +28,19 @@ const download = async (ctx) => {
 const sendFile = async (req, res) => {
   const { chatId, content } = req.body;
   await bot.telegram.sendMessage(chatId, content);
+  quene = 0;
   res.json({ status: "success" });
 };
 
 const classifyWebsite = async (ctx) => {
+  if (quene == 1) {
+    await ctx.reply("Server busy ... Try again in a few minutes");
+    return;
+  }
   let website = helper.domain_from_url(ctx.message.text);
   switch (website) {
     case "pikbest.com":
+      quene = 1;
       let args = `${
         botConfig.cookiePikbest
       } pikbest.com ${helper.splitIdItemPikbest(ctx.message.text)} ${
