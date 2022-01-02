@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const router = require("./routes/router");
 const schedule = require("node-schedule");
+const fs = require("fs");
 
 const app = express();
 
@@ -25,4 +26,5 @@ app.listen(1234, () => {
 const job = schedule.scheduleJob("0 0 * * *", async function () {
   console.log("job running");
   require("./utils/helper").deleteAllFile("./files/");
+  fs.writeFileSync("./config/db.json", "{}");
 });

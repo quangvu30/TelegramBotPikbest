@@ -9,8 +9,18 @@ bot.command("help", botController.help);
 
 bot.command("getMe", botController.getMe);
 
-bot.command("download", botMiddleware.isOnWhiteList, botController.download);
+bot.command(
+  "download",
+  botMiddleware.isOnWhiteList,
+  botMiddleware.isLimitAccess,
+  botController.download
+);
 
-bot.on("text", botMiddleware.isOnWhiteList, botController.classifyWebsite);
+bot.on(
+  "text",
+  botMiddleware.isOnWhiteList,
+  botMiddleware.isLimitAccess,
+  botController.classifyWebsite
+);
 
 bot.launch();
